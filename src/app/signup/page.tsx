@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@mantine/core';
+import { Anchor, Button, Text } from '@mantine/core';
 import TextInput from "@/components/TextInput";
 import axios, { TOKEN_KEY } from '@/config/axios'
 import { useRouter } from 'next/navigation';
@@ -10,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
+import Link from 'next/link';
 
 const defaultValues = {
    email: '',
@@ -43,10 +44,7 @@ export default function Login() {
       mutateAsync: signupMutation,
       isPending: isLoadingsignupMutation,
    } = useMutation({
-      mutationFn: async (payload: {
-         email: string,
-         password: string
-      }) => axios.post('/users', payload),
+      mutationFn: async (payload: typeof defaultValues) => axios.post('/users', payload),
       mutationKey: ['/users']
    });
 
@@ -55,20 +53,14 @@ export default function Login() {
 
    const onSignUp = async () => {
       const email = methods.watch('email');
-      const password = methods.watch('password');
       try {
-         if (!password.trim() || !email.trim()) {
-            toast.error('You need to complete both the password and email fields');
-            return;
-         }
-         const response = await signupMutation({
-            password, email
-         })
+
+         const response = await signupMutation(methods.getValues());
 
 
          if (response.data) {
-            router.replace('/commit-history');
-            Cookies.set(TOKEN_KEY, JSON.stringify(response.data))
+            Cookies.set('email-to-verify', email)
+            router.replace('/signup-confirmation');
          }
 
       } catch (error: any) {
@@ -129,6 +121,14 @@ export default function Login() {
                               variant={'filled'}
                               loading={isLoadingsignupMutation}
                            >Sign Up</Button>
+                           <div className='flex flex-col items-center mt-2'>
+                              <Text>{'Already have your account?'}</Text>
+                              <Link href='/login'>
+                                 <Anchor>
+                                    Login
+                                 </Anchor>
+                              </Link>
+                           </div>
                         </div>
                      </div>
                   </div>

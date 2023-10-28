@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@mantine/core';
+import { Anchor, Button, Text } from '@mantine/core';
 import TextInput from "@/components/TextInput";
 import { useState } from 'react';
 import toast from 'react-hot-toast';
@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
 import { FormProvider, useForm } from 'react-hook-form';
+import Link from 'next/link';
 
 export default function Login() {
    const methods = useForm({
@@ -88,6 +89,14 @@ export default function Login() {
                               variant={'filled'}
                               loading={isLoadingLoginMutation}
                            >Login</Button>
+                           <div className='flex flex-col items-center mt-2'>
+                              <Text>{'Don\'t have and account?'}</Text>
+                              <Link href='/signup'>
+                                 <Anchor>
+                                    Sign Up
+                                 </Anchor>
+                              </Link>
+                           </div>
                         </div>
                      </div>
                   </div>

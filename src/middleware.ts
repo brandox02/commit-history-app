@@ -6,14 +6,21 @@ export function middleware(request: NextRequest) {
    const authDataStr = request.cookies.get(TOKEN_KEY)?.value;
    const authData = JSON.parse(authDataStr || '{}');
 
-   const isLoginPage = request.nextUrl.pathname === '/login';
-   const isSignupPage = request.nextUrl.pathname === '/signup';
+   const whiteList = ['/login', '/signup', '/signup-confirmation']
+   const isInWhiteList = whiteList.includes(request.nextUrl.pathname);
 
-   if (authData?.token && (isLoginPage && isSignupPage)) {
+   const thereIsEmailToVerify = request.cookies.get('email-to-verify');
+   console.log({ thereIsEmailToVerify })
+
+   if (thereIsEmailToVerify && request.nextUrl.pathname !== '/signup-confirmation') {
+      return NextResponse.redirect(new URL('/signup-confirmation', request.url))
+   }
+
+   if (authData?.token && isInWhiteList) {
       return NextResponse.redirect(new URL('/commit-history', request.url))
    }
 
-   if (!authData?.token && (!isLoginPage && !isSignupPage)) {
+   if (!authData?.token && !isInWhiteList) {
       return NextResponse.redirect(new URL('/login', request.url));
    }
 
