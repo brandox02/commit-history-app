@@ -2,36 +2,61 @@
 
 import { Button } from '@mantine/core';
 import TextInput from "@/components/TextInput";
-import manageGraphqlError from '@/utils/manageGraphqlError';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import Cookie from 'js-cookie';
+import axios, { TOKEN_KEY } from '@/config/axios'
 import { useRouter } from 'next/navigation';
-// import { setAuthToken } from '@/config/ApolloProvider';
+import { useMutation } from '@tanstack/react-query';
+import Cookies from 'js-cookie';
 
 export default function Login() {
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
-   const [loadingLogin, setLoadingLogin] = useState(false);
+
+   const {
+      mutateAsync: loginMutation,
+      isPending: isLoadingLoginMutation,
+      // isError: isErrorLoadingMutation
+   } = useMutation({
+      // mutationFn: async (f: any) => {
+      //    return 2;
+      // },
+      mutationFn: async (payload: {
+         email: string,
+         password: string
+      }) => {
+         console.log({ payload })
+         return axios.post('/auth/login', payload)
+      },
+      mutationKey: ['/auth/login']
+   });
 
    const router = useRouter();
 
-   const onLogin = manageGraphqlError(async () => {
-      setLoadingLogin(true)
-      if (!password.trim() || !email.trim()) {
-         toast.error('Debes completar la contraseña y el correo');
-         return;
-      }
-      // const { data } = await loginMutation({ variables: { email, password } });
-      // Cookie.set('auth', JSON.stringify(data.login));
-      router.replace('/backoffice/surveys');
-      // setAuthToken(data.accessToken);
+   const onLogin = async () => {
+      try {
+         if (!password.trim() || !email.trim()) {
+            toast.error('You need to complete both the password and email fields');
+            return;
+         }
+         const response = await loginMutation({
+            password, email
+         })
 
-   }, { 'Resource not found': 'Usuario o contraseña inválidos' }, {
-      errorCallback: () => {
-         setLoadingLogin(false);
+
+         if (response.data) {
+            router.replace('/commit-history');
+            Cookies.set(TOKEN_KEY, JSON.stringify(response.data))
+         }
+
+      } catch (error: any) {
+         console.log({ error })
+         if (error?.response?.data?.message === 'user or password wrong') {
+            toast.error('User or password are wrong');
+         }
       }
-   });
+
+   }
 
    return (
       <div className="bg-[#F1F6FF] w-screen h-screen">
@@ -57,7 +82,11 @@ export default function Login() {
                         onChange={(e) => setPassword(e.target.value)}
                         value={password}
                      />
-                     <Button onClick={onLogin} variant={'filled'} className='mt-5' loading={loadingLogin}>Ingresar</Button>
+                     <Button
+                        onClick={onLogin}
+                        variant={'filled'}
+                        loading={isLoadingLoginMutation}
+                     >Ingresar</Button>
                   </div>
                </div>
             </div>

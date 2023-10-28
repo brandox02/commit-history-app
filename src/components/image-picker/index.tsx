@@ -1,5 +1,5 @@
 'use client ';
-import { Group, Modal, Text } from '@mantine/core';
+import { Group, Text } from '@mantine/core';
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { GiCancel } from 'react-icons/gi'
 import { AiOutlineCloudUpload } from 'react-icons/ai'
@@ -8,7 +8,6 @@ import Image from 'next/image';
 import imageNonFound from '@/images/non-image.png';
 import toast from 'react-hot-toast';
 import { getBase64 } from '@/utils/fileToBase64';
-
 
 type ImagePicker = {
    onLoad: Function, image: any, setImage: (image: any) => void

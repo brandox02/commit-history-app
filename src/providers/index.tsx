@@ -2,7 +2,7 @@
 
 import { Toaster } from 'react-hot-toast';
 import MantineProvider from './MantineProvider';
-import VerifyToken from './VerifyToken';
+import QueryProvider from './QueryClient';
 
 type Props = {
    children: React.ReactNode
@@ -10,13 +10,12 @@ type Props = {
 
 
 export default function Providers({ children }: Props) {
-
    return (
-      <VerifyToken>
-         <MantineProvider>
+      <MantineProvider>
+         <QueryProvider>
             {children}
-            <Toaster />
-         </MantineProvider>
-      </VerifyToken>
+         </QueryProvider>
+         <Toaster />
+      </MantineProvider>
    )
 }
