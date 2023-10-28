@@ -6,12 +6,14 @@ export function middleware(request: NextRequest) {
    const authDataStr = request.cookies.get(TOKEN_KEY)?.value;
    const authData = JSON.parse(authDataStr || '{}');
 
-   const isLoginPage = request.nextUrl.pathname === '/login'
-   if (authData?.token && isLoginPage) {
+   const isLoginPage = request.nextUrl.pathname === '/login';
+   const isSignupPage = request.nextUrl.pathname === '/signup';
+
+   if (authData?.token && (isLoginPage && isSignupPage)) {
       return NextResponse.redirect(new URL('/commit-history', request.url))
    }
 
-   if (!authData?.token && !isLoginPage) {
+   if (!authData?.token && (!isLoginPage && !isSignupPage)) {
       return NextResponse.redirect(new URL('/login', request.url));
    }
 

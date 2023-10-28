@@ -8,32 +8,37 @@ export interface TextInputProp {
    className?: string;
    type?: string;
    name: string,
-   required?: boolean
 }
+
+
 export default function TextInput({
-   placeholder = '', label = '', disabled,
-   removeDoublePoints = false, className = ''
-   , type = 'text',
-   name, required = true
+   placeholder = '',
+   label = '',
+   disabled,
+   removeDoublePoints = false,
+   className = '',
+   type = 'text',
+   name,
 }: TextInputProp) {
 
    const methods = useFormContext();
-   console.log({ errors: methods.formState.errors })
+   console.log()
+
+   const error = methods.formState?.errors[name];
+
    return (
-      <>
-         <label className={`relative flex gap-2 items-center my-2 text-blue-950 ${className}`}>
+      <div className='my-2'>
+         <label className={`relative flex gap-2 items-center  text-blue-950 ${className}`}>
             {label && <span className="font-semibold">{`${label}${removeDoublePoints ? '' : ':'} `}</span>}
             <input
                disabled={!!disabled}
                className="disabled:bg-sky-100 disabled:text-blue-900 placeholder:italic font-semibold placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 text-xs"
                placeholder={placeholder}
                type={type}
-               {...methods.register(name, {
-                  required
-               })}
+               {...methods.register(name)}
             />
          </label>
-         {Object.entries(methods.formState.errors).length ? <span>This field is required</span> : ''}
-      </>
+         {error ? <span className='text-red-600 font-medium'>{error.type === 'invalid_type' ? 'This field is required' : error.message?.toString()}</span> : ''}
+      </div>
    )
 }
