@@ -36,7 +36,6 @@ axios.interceptors.response.use(
    (error) => {
       const { data } = error.response;
       if (data.statusCode === 401 && data.message === 'Unauthorized') {
-         console.log("its here")
          Cookies.remove(TOKEN_KEY);
          window.location.href = '/login'
       }

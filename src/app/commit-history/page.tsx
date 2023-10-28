@@ -4,10 +4,13 @@ import { Button } from '@mantine/core';
 import Card from "@/components/Card";
 import Loader from "@/components/Loader";
 import TextInput from "@/components/TextInput";
-import axios from "@/config/axios";
+import axios, { TOKEN_KEY } from "@/config/axios";
 import { Text } from "@mantine/core";
 import { useQuery } from '@tanstack/react-query';
 import { FormProvider, useForm } from 'react-hook-form';
+import { RiLogoutBoxRLine } from 'react-icons/ri';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 
 
 interface CommitAuthorClass {
@@ -42,8 +45,14 @@ export default function App() {
       queryKey: ['/commit-history', JSON.stringify(methods.getValues())],
       queryFn: () => axios.get('/commit-history', { params: methods.getValues() })
    });
+   const router = useRouter()
 
-   const onSubmit = (data: Form) => refetch()
+   const onSubmit = (data: Form) => refetch();
+   const onLogout = () => {
+      Cookies.remove(TOKEN_KEY);
+      router.push('/login');
+
+   }
 
    const commits: Commit[] = data?.data || [];
 
@@ -54,14 +63,17 @@ export default function App() {
    }
 
    return <div className="bg-[#F8F9FA] w-[600px] p-10 relative">
-      <Text
-         className=""
-         align="center"
-         size="xl"
-         fw={900}
-         variant="gradient"
-         gradient={{ from: 'blue', to: 'cyan', deg: 215 }}
-      >Commit History App</Text>
+      <div className='flex flex-col items-center gap-3'>
+         <Text
+            className=""
+            align="center"
+            size="xl"
+            fw={900}
+            variant="gradient"
+            gradient={{ from: 'blue', to: 'cyan', deg: 215 }}
+         >Commit History App</Text>
+         <RiLogoutBoxRLine size={24} className='cursor-pointer' onClick={onLogout} />
+      </div>
 
       <div className="flex gap-10 justify-center mt-16 flex-row  ">
          <FormProvider {...methods}>
