@@ -1,6 +1,7 @@
 'use client';
 
 import Card from "@/components/Card";
+import TextInput from "@/components/TextInput";
 import axios from "@/config/axios";
 import { Text } from "@mantine/core";
 import { useQuery } from '@tanstack/react-query';
@@ -33,25 +34,37 @@ export default function App() {
 
    const commits: Commit[] = data?.data || [];
 
-   return <div className="bg-[#F8F9FA] w-full flex flex-col items-center p-10 border overflow-auto">
+   return <div className="bg-[#F8F9FA] w-full p-10 relative">
       <Text
+         className="sticky top-0"
          align="center"
          size="xl"
          fw={900}
          variant="gradient"
          gradient={{ from: 'blue', to: 'cyan', deg: 215 }}
       >Commit History App</Text>
-      <div className="">
+      {/* <TextInput
+         label="Email"
+         className=""
+         style={2}
+         onChange={(e) => 'fds'}
+         value={''}
+      /> */}
+      <div className="flex justify-center gap-5 flex-col items-center mt-10" >
          {commits.map(({ id, author, message, url, avatar_url }) => (
-            <Card
+            <div
                key={id}
-               commit={message}
-               commitUrl={url}
-               date={author.date}
-               email={author.email}
-               fullname={author.name}
-               photoUrl={avatar_url}
-            />
+            >
+               <Card
+
+                  commit={message}
+                  commitUrl={url}
+                  date={author.date}
+                  email={author.email}
+                  fullname={author.name}
+                  photoUrl={avatar_url}
+               />
+            </div>
          ))}
 
       </div>

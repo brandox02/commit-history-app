@@ -4,7 +4,6 @@ import aa from 'axios';
 import Cookies from 'js-cookie';
 
 
-
 const axios = aa.create()
 
 axios.defaults.baseURL = `${process.env.NEXT_PUBLIC_API_URL}/api`;
@@ -27,7 +26,20 @@ axios.interceptors.request.use(
       return request;
    },
    (error) => {
-      // throw new Error(error);
+      return Promise.reject(error);
+   }
+);
+
+
+axios.interceptors.response.use(
+   (response) => response,
+   (error) => {
+      const { data } = error.response;
+      if (data.statusCode === 401 && data.message === 'Unauthorized') {
+         console.log("its here")
+         Cookies.remove(TOKEN_KEY);
+         window.location.href = '/login'
+      }
       return Promise.reject(error);
    }
 );

@@ -1,4 +1,4 @@
-import { Card as MatineCard, Image, Text, Badge, Button, Group } from '@mantine/core';
+import { Card as MatineCard, Image, Text, Badge, Button, Group, Avatar } from '@mantine/core';
 import Link from 'next/link';
 import dayjs from 'dayjs';
 
@@ -13,23 +13,23 @@ type Props = {
 
 export default function Card({ commit, commitUrl, date, email, fullname, photoUrl }: Props) {
    return (
-      <MatineCard shadow="xs" padding="lg" radius="md" withBorder className='my-10 w-8/12'>
+      <MatineCard shadow="xs" padding="lg" radius="md" withBorder className='' style={{ width: 500 }}>
          <MatineCard.Section>
-            <Image
-               src={photoUrl}
-               alt="Norway"
-            />
+
          </MatineCard.Section>
 
-         <Group mt="md" mb="xs">
-            <div className='flex flex-col'>
-               <Text style={{ fontSize: 15 }} fw={400}>{email}</Text>
-               <Text fw={500}>{fullname}</Text>
+         <div className='flex justify-between items-center py-3'>
+            <div className='flex gap-3 items-center'>
+               <Avatar src={photoUrl} alt="it's me" size={'lg'} />
+               <div className='flex flex-col'>
+                  <Text fw={500}>{fullname}</Text>
+                  <Text style={{ fontSize: 15 }} fw={400}>{email}</Text>
+               </div>
             </div>
-            <Badge color="pink" variant="light">
+            <Badge color="pink" variant="light" className='border'>
                {dayjs(date).format('YYYY-MM-DD')}
             </Badge>
-         </Group>
+         </div>
 
          <Text size="sm" c="dimmed">
             {commit}
