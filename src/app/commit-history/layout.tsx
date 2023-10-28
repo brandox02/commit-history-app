@@ -9,6 +9,6 @@ export default function RootLayout({
 }) {
 
    return (
-      <div className="bg-[#F8F9FA] w-full h-screen">{children}</div>
+      <div className="bg-[#F8F9FA] w-full h-screen flex justify-center  ">{children}</div>
    )
 }

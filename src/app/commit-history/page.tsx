@@ -9,6 +9,7 @@ import { Text } from "@mantine/core";
 import { useQuery } from '@tanstack/react-query';
 import { FormProvider, useForm } from 'react-hook-form';
 
+
 interface CommitAuthorClass {
    name: string;
    email: string;
@@ -42,8 +43,6 @@ export default function App() {
       queryFn: () => axios.get('/commit-history', { params: methods.getValues() })
    });
 
-
-
    const onSubmit = (data: Form) => refetch()
 
    const commits: Commit[] = data?.data || [];
@@ -54,18 +53,19 @@ export default function App() {
       )
    }
 
-   return <div className="bg-[#F8F9FA] w-full p-10 relative">
+   return <div className="bg-[#F8F9FA] w-[600px] p-10 relative">
       <Text
-         className="sticky top-0"
+         className=""
          align="center"
          size="xl"
          fw={900}
          variant="gradient"
          gradient={{ from: 'blue', to: 'cyan', deg: 215 }}
       >Commit History App</Text>
-      <div className="flex gap-10 w-full justify-center mt-16 flex-row">
+
+      <div className="flex gap-10 justify-center mt-16 flex-row  ">
          <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(onSubmit)}>
+            <form onSubmit={methods.handleSubmit(onSubmit)} className=''>
                <TextInput
                   label="Username"
                   className=""
@@ -78,17 +78,18 @@ export default function App() {
                   name='repo'
                />
                <Button
+                  fullWidth
                   className='w-full '
                   type='submit'
                   onClick={() => { }}
                   variant={'filled'}
                   loading={isLoading}
-               >Ingresar</Button>
+               >Search</Button>
             </form>
          </FormProvider>
       </div>
       {commits.length ? (
-         <div className="flex justify-center gap-5 flex-col items-center mt-10" >
+         <div className="flex flex-col gap-5 mt-10  h-[75vh] overflow-auto" >
             {commits.map(({ id, author, message, url, avatar_url }) => (
                <div
                   key={id}

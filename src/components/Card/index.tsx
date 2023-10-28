@@ -13,7 +13,7 @@ type Props = {
 
 export default function Card({ commit, commitUrl, date, email, fullname, photoUrl }: Props) {
    return (
-      <MatineCard shadow="xs" padding="lg" radius="md" withBorder className='' style={{ width: 500 }}>
+      <MatineCard shadow="xs" padding="lg" radius="md" withBorder className='mx-10 '>
          <MatineCard.Section>
 
          </MatineCard.Section>
