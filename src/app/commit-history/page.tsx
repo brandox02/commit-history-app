@@ -75,7 +75,7 @@ export default function App() {
          <RiLogoutBoxRLine size={24} className='cursor-pointer' onClick={onLogout} />
       </div>
 
-      <div className="flex gap-10 justify-center mt-16 flex-row  ">
+      <div className="flex gap-10 justify-center mt-5 flex-row  ">
          <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmit)} className=''>
                <TextInput
@@ -101,7 +101,7 @@ export default function App() {
          </FormProvider>
       </div>
       {commits.length ? (
-         <div className="flex flex-col gap-5 mt-10  h-[75vh] overflow-auto" >
+         <div className="flex flex-col gap-5 mt-10  h-[55vh] overflow-auto" >
             {commits.map(({ id, author, message, url, avatar_url }) => (
                <div
                   key={id}
