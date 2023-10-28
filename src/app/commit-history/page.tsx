@@ -2,6 +2,7 @@
 
 import Card from "@/components/Card";
 import axios from "@/config/axios";
+import { Text } from "@mantine/core";
 import { useQuery } from '@tanstack/react-query';
 
 interface CommitAuthorClass {
@@ -16,7 +17,8 @@ interface Commit {
    message: string;
    url: string;
    comment_count: number
-   id: string
+   id: string,
+   avatar_url: string
 }
 
 // type f = { username: string, repo: string }
@@ -31,9 +33,16 @@ export default function App() {
 
    const commits: Commit[] = data?.data || [];
 
-   return <div className="bg-[#F8F9FA] w-full h-screen flex justify-center p-10">
+   return <div className="bg-[#F8F9FA] w-full flex flex-col items-center p-10 border overflow-auto">
+      <Text
+         align="center"
+         size="xl"
+         fw={900}
+         variant="gradient"
+         gradient={{ from: 'blue', to: 'cyan', deg: 215 }}
+      >Commit History App</Text>
       <div className="">
-         {commits.map(({ id, author, message, url }) => (
+         {commits.map(({ id, author, message, url, avatar_url }) => (
             <Card
                key={id}
                commit={message}
@@ -41,6 +50,7 @@ export default function App() {
                date={author.date}
                email={author.email}
                fullname={author.name}
+               photoUrl={avatar_url}
             />
          ))}
 

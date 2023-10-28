@@ -8,15 +8,15 @@ type Props = {
    date: Date
    commit: string
    commitUrl: string
+   photoUrl: string
 }
 
-export default function Card({ commit, commitUrl, date, email, fullname }: Props) {
+export default function Card({ commit, commitUrl, date, email, fullname, photoUrl }: Props) {
    return (
-      <MatineCard shadow="xs" padding="lg" radius="md" withBorder className='my-10'>
+      <MatineCard shadow="xs" padding="lg" radius="md" withBorder className='my-10 w-8/12'>
          <MatineCard.Section>
             <Image
-               src="https://avatars.githubusercontent.com/u/67993552?v=4"
-               height={40}
+               src={photoUrl}
                alt="Norway"
             />
          </MatineCard.Section>
