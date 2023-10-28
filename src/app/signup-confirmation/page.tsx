@@ -21,10 +21,7 @@ const validationSchema = z.object(
          ...acc,
          [key]: z.string().min(1, { message: 'This field is required' }),
       }), {})
-).refine((data: any) => data.password == data.passwordConfirmation, {
-   message: 'Passwords do not match',
-   path: ['passwordConfirmation']
-});
+)
 
 export default function Login() {
 

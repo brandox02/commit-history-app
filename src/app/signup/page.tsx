@@ -25,7 +25,7 @@ const validationSchema = z.object(
       .reduce((acc, key) => ({
          ...acc,
          [key]: z.string().min(1, { message: 'This field is required' }),
-         email: z.string().email(),
+         email: z.string().min(1, { message: 'This field is required' }).email(),
 
       }), {})
 ).refine((data: any) => data.password == data.passwordConfirmation, {

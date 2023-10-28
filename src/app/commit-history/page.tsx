@@ -11,7 +11,23 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { useState } from 'react';
 
+
+const defaultValues = {
+   username: 'brandox02',
+   repo: 'commit-history-api'
+}
+
+const validationSchema = z.object(
+   Object.keys(defaultValues)
+      .reduce((acc, key) => ({
+         ...acc,
+         [key]: z.string().min(1, { message: 'This field is required' }),
+      }), {})
+)
 
 interface CommitAuthorClass {
    name: string;
@@ -35,19 +51,23 @@ interface Form {
 
 export default function App() {
    const methods = useForm<Form>({
-      defaultValues: {
-         username: 'brandox02',
-         repo: 'commit-history-api'
-      }
+      defaultValues,
+      resolver: zodResolver(validationSchema)
    });
 
-   const { data, isLoading, refetch } = useQuery({
-      queryKey: ['/commit-history', JSON.stringify(methods.getValues())],
-      queryFn: () => axios.get('/commit-history', { params: methods.getValues() })
+   const [params, setParams] = useState<Form>(defaultValues);
+
+   const { data, isLoading } = useQuery({
+      queryKey: ['/commit-history', JSON.stringify(params)],
+      queryFn: () => axios.get('/commit-history', { params }),
+      retry: 0
    });
+
+
    const router = useRouter()
 
-   const onSubmit = (data: Form) => refetch();
+   const onSubmit = (data: Form) => setParams(data);
+
    const onLogout = () => {
       Cookies.remove(TOKEN_KEY);
       router.push('/login');

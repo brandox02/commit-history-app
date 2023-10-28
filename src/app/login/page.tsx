@@ -2,7 +2,6 @@
 
 import { Anchor, Button, Text } from '@mantine/core';
 import TextInput from "@/components/TextInput";
-import { useState } from 'react';
 import toast from 'react-hot-toast';
 import axios, { TOKEN_KEY } from '@/config/axios'
 import { useRouter } from 'next/navigation';
@@ -10,13 +9,30 @@ import { useMutation } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
 import { FormProvider, useForm } from 'react-hook-form';
 import Link from 'next/link';
+import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const defaultValues = {
+   email: '',
+   password: ''
+}
+
+const validationSchema = z.object(
+   Object.keys(defaultValues)
+      .reduce((acc, key) => ({
+         ...acc,
+         [key]: z.string().min(1, { message: 'This field is required' }),
+         email: z.string().min(1, { message: 'This field is required' }).email(),
+      }), {})
+)
 
 export default function Login() {
    const methods = useForm({
       defaultValues: {
          email: '',
          password: ''
-      }
+      },
+      resolver: zodResolver(validationSchema)
    });
 
    const {
@@ -36,14 +52,9 @@ export default function Login() {
 
    const onLogin = async () => {
       try {
-         if (!password.trim() || !email.trim()) {
-            toast.error('You need to complete both the password and email fields');
-            return;
-         }
          const response = await loginMutation({
             password, email
          })
-
 
          if (response.data) {
             router.replace('/commit-history');
@@ -70,7 +81,6 @@ export default function Login() {
                            Iniciar Sesión
                         </h1>
                         <div className="flex flex-col gap-2">
-
                            <TextInput
                               name='email'
                               label="Email"
@@ -85,7 +95,7 @@ export default function Login() {
 
                            />
                            <Button
-                              onClick={onLogin}
+                              type='submit'
                               variant={'filled'}
                               loading={isLoadingLoginMutation}
                            >Login</Button>
