@@ -8,19 +8,20 @@ import axios, { TOKEN_KEY } from '@/config/axios'
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
+import { FormProvider, useForm } from 'react-hook-form';
 
 export default function Login() {
-   const [email, setEmail] = useState('');
-   const [password, setPassword] = useState('');
+   const methods = useForm({
+      defaultValues: {
+         email: '',
+         password: ''
+      }
+   });
 
    const {
       mutateAsync: loginMutation,
       isPending: isLoadingLoginMutation,
-      // isError: isErrorLoadingMutation
    } = useMutation({
-      // mutationFn: async (f: any) => {
-      //    return 2;
-      // },
       mutationFn: async (payload: {
          email: string,
          password: string
@@ -32,6 +33,8 @@ export default function Login() {
    });
 
    const router = useRouter();
+   const email = methods.watch('email');
+   const password = methods.watch('password');
 
    const onLogin = async () => {
       try {
@@ -59,39 +62,42 @@ export default function Login() {
    }
 
    return (
-      <div className="bg-[#F1F6FF] w-screen h-screen">
-         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-            <div className="w-full bg-white rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0">
-               <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                  <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-                     Iniciar Sesión
-                  </h1>
-                  <div className="flex flex-col gap-2">
-                     <TextInput
-                        label="Email"
-                        className=""
-                        style={2}
-                        onChange={(e) => setEmail(e.target.value)}
-                        value={email}
-                     />
-                     <TextInput
-                        type='password'
-                        label="Contraseña"
-                        className=""
-                        style={2}
-                        onChange={(e) => setPassword(e.target.value)}
-                        value={password}
-                     />
-                     <Button
-                        onClick={onLogin}
-                        variant={'filled'}
-                        loading={isLoadingLoginMutation}
-                     >Ingresar</Button>
+      <FormProvider {...methods}>
+         <form onSubmit={methods.handleSubmit(onLogin)}>
+            <div className="bg-[#F1F6FF] w-screen h-screen">
+               <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+                  <div className="w-full bg-white rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0">
+                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+                        <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+                           Iniciar Sesión
+                        </h1>
+                        <div className="flex flex-col gap-2">
+
+                           <TextInput
+                              name='email'
+                              label="Email"
+                              className=""
+
+                           />
+                           <TextInput
+                              name='password'
+                              type='password'
+                              label="Password"
+                              className=""
+
+                           />
+                           <Button
+                              onClick={onLogin}
+                              variant={'filled'}
+                              loading={isLoadingLoginMutation}
+                           >Ingresar</Button>
+                        </div>
+                     </div>
                   </div>
                </div>
-            </div>
-         </div>
 
-      </div >
+            </div >
+         </form>
+      </FormProvider>
    )
 }
