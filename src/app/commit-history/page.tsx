@@ -60,7 +60,7 @@ export default function App() {
    const { data, isLoading } = useQuery({
       queryKey: ['/commit-history', JSON.stringify(params)],
       queryFn: () => axios.get('/commit-history', { params }),
-      retry: 0
+      retry: 0,
    });
 
 
@@ -137,6 +137,6 @@ export default function App() {
                </div>
             ))}
          </div>
-      ) : 'There is not data to show'}
+      ) : <Text className='mt-10'>There is not data to show</Text>}
    </div>
 }

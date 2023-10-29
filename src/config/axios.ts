@@ -1,12 +1,10 @@
 
 'use client'
-import aa from 'axios';
+import axios from 'axios';
 import Cookies from 'js-cookie';
-
-const axios = aa.create()
+import toast from 'react-hot-toast';
 
 axios.defaults.baseURL = `${process.env.NEXT_PUBLIC_API_URL}/api`;
-
 
 export const TOKEN_KEY = "AUTH_DATA";
 
@@ -37,6 +35,10 @@ axios.interceptors.response.use(
       if (data.statusCode === 401 && data.message === 'Unauthorized') {
          Cookies.remove(TOKEN_KEY);
          window.location.href = '/login'
+      }
+
+      if (data.statusCode === 500 && data.message === 'Github Api rate limit exceeded') {
+         toast.error('Github API rate limit exceeded, please try about 1 hour');
       }
       return Promise.reject(error);
    }
