@@ -71,49 +71,50 @@ export default function Login() {
    }
 
    return (
-      <FormProvider {...methods}>
-         <form onSubmit={methods.handleSubmit(onLogin)}>
-            <div className="bg-[#F1F6FF] w-screen h-screen">
-               <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-                  <div className="w-full bg-white rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0">
-                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                        <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-                           Iniciar Sesión
-                        </h1>
-                        <div className="flex flex-col gap-2">
-                           <TextInput
-                              name='email'
-                              label="Email"
-                              className=""
+      <div>
+         <FormProvider {...methods}>
+            <form onSubmit={methods.handleSubmit(onLogin)}>
+               <div className="bg-[#F1F6FF] w-screen h-screen">
+                  <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+                     <div className="w-full bg-white rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0">
+                        <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+                           <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+                              Iniciar Sesión
+                           </h1>
+                           <div className="flex flex-col gap-2">
+                              <TextInput
+                                 name='email'
+                                 label="Email"
+                                 className=""
+                              />
+                              <TextInput
+                                 name='password'
+                                 type='password'
+                                 label="Password"
+                                 className=""
 
-                           />
-                           <TextInput
-                              name='password'
-                              type='password'
-                              label="Password"
-                              className=""
-
-                           />
-                           <Button
-                              type='submit'
-                              variant={'filled'}
-                              loading={isLoadingLoginMutation}
-                           >Login</Button>
-                           <div className='flex flex-col items-center mt-2'>
-                              <Text>{'Don\'t have and account?'}</Text>
-                              <Link href='/signup'>
-                                 <Anchor>
-                                    Sign Up
-                                 </Anchor>
-                              </Link>
+                              />
+                              <Button
+                                 type='submit'
+                                 variant={'filled'}
+                                 loading={isLoadingLoginMutation}
+                              >Login</Button>
+                              <div className='flex flex-col items-center mt-2'>
+                                 <Text>{'Don\'t have and account?'}</Text>
+                                 <Link href='/signup'>
+                                    <Anchor>
+                                       Sign Up
+                                    </Anchor>
+                                 </Link>
+                              </div>
                            </div>
                         </div>
                      </div>
                   </div>
-               </div>
 
-            </div >
-         </form>
-      </FormProvider>
+               </div >
+            </form>
+         </FormProvider>
+      </div>
    )
 }

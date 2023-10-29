@@ -3,7 +3,6 @@
 import aa from 'axios';
 import Cookies from 'js-cookie';
 
-
 const axios = aa.create()
 
 axios.defaults.baseURL = `${process.env.NEXT_PUBLIC_API_URL}/api`;
