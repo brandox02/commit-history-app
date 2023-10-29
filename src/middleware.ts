@@ -10,7 +10,10 @@ export function middleware(request: NextRequest) {
    const isInWhiteList = whiteList.includes(request.nextUrl.pathname);
 
    const thereIsEmailToVerify = request.cookies.get('email-to-verify');
-   console.log({ thereIsEmailToVerify })
+
+   if (request.nextUrl.pathname === '/') {
+      return NextResponse.redirect(new URL('/login', request.url))
+   }
 
    if (thereIsEmailToVerify && request.nextUrl.pathname !== '/signup-confirmation') {
       return NextResponse.redirect(new URL('/signup-confirmation', request.url))

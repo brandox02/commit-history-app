@@ -4,7 +4,7 @@ It has authentication flow integrated, token session via cookies with js-cookie,
 
 ## Installation
 
-First, you need to have the `meeting-history-api` running, then you need to set up the .env file, in order to make it, you just have to create a `.env.local` file at the project's root that contains the following:
+First, you need to have the `meeting-history-api` running, then you need to set up the .env.local file, in order to make it, you just have to create a `.env.local` file at the project's root that contains the following:
 
 ```bas
 NEXT_PUBLIC_API_URL=http://localhost:3250
@@ -21,7 +21,7 @@ yarn
 
 After execute the following to run the development server:
 
-```bash
+```bash 
 npm run dev
 # or
 yarn dev
