@@ -123,11 +123,9 @@ export default function Login() {
                            >Sign Up</Button>
                            <div className='flex flex-col items-center mt-2'>
                               <Text>{'Already have your account?'}</Text>
-                              <Link href='/login'>
-                                 <Anchor>
-                                    Login
-                                 </Anchor>
-                              </Link>
+                              <Anchor href='/login'>
+                                 Login
+                              </Anchor>
                            </div>
                         </div>
                      </div>
