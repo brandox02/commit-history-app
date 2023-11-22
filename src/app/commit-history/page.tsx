@@ -4,13 +4,10 @@ import { Button } from '@mantine/core';
 import Card from "@/components/Card";
 import Loader from "@/components/Loader";
 import TextInput from "@/components/TextInput";
-import axios, { TOKEN_KEY } from "@/config/axios";
+import axios from "@/config/axios";
 import { Text } from "@mantine/core";
 import { useQuery } from '@tanstack/react-query';
 import { FormProvider, useForm } from 'react-hook-form';
-import { RiLogoutBoxRLine } from 'react-icons/ri';
-import Cookies from 'js-cookie';
-import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useState } from 'react';
@@ -62,16 +59,7 @@ export default function App() {
       retry: 0,
    });
 
-
-   const router = useRouter();
-
    const onSubmit = (data: Form) => setParams(data);
-
-   const onLogout = () => {
-      Cookies.remove(TOKEN_KEY);
-      router.push('/login');
-
-   }
 
    const commits: Commit[] = data?.data || [];
 
@@ -91,7 +79,6 @@ export default function App() {
             variant="gradient"
             gradient={{ from: 'blue', to: 'cyan', deg: 215 }}
          >Commit History App</Text>
-         <RiLogoutBoxRLine size={24} className='cursor-pointer' onClick={onLogout} />
       </div>
 
       <div className="flex gap-10 justify-center mt-5 flex-row  ">

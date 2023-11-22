@@ -1,0 +1,12 @@
+version: '1'
+
+services:
+  commit-history-app:
+    image: commit-history-app
+    ports:
+      - "3000:3000"
+    volumes:
+      - data:/var/lib/data
+    
+volumes:
+  data:
