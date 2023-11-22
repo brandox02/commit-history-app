@@ -15,7 +15,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useState } from 'react';
 
-
 const defaultValues = {
    username: 'brandox02',
    repo: 'commit-history-api'
@@ -64,7 +63,7 @@ export default function App() {
    });
 
 
-   const router = useRouter()
+   const router = useRouter();
 
    const onSubmit = (data: Form) => setParams(data);
 
